@@ -9,8 +9,8 @@ export default function HeroCanvasSequence() {
   const currentFrame = (i) => `/bipedFrames/bipedVideo${String(i).padStart(3, '0')}.png`;
 
   // Animation controls
-  const easingFactor = 0.1; // Lower = smoother, higher = snappier
-  const maxFrameChangePerUpdate = 2; // Max frames to change per animation frame (prevents chaos)
+  const easingFactor = 0.05; // Lower = smoother, higher = snappier
+  const maxFrameChangePerUpdate = 5; // Max frames to change per animation frame (prevents chaos)
 
   // Preload images once
   const imagesRef = useRef([]);
@@ -48,17 +48,23 @@ export default function HeroCanvasSequence() {
 
   // Scroll → frame number
   useEffect(() => {
-    let currentFrameIndex = 0;
-    let targetFrameIndex = 0;
-
-    const onScroll = () => {
+    // Initialize frame indices based on current scroll position
+    // This prevents flickering when navigating back from project pages
+    const getFrameFromScroll = () => {
       const maxScroll = document.body.scrollHeight - window.innerHeight;
       const scrollFraction = window.scrollY / maxScroll;
-
-      targetFrameIndex = Math.min(
+      return Math.min(
         frameCount - 1,
         Math.max(0, Math.floor(scrollFraction * (frameCount - 1)))
       );
+    };
+
+    const initialFrame = getFrameFromScroll();
+    let currentFrameIndex = initialFrame;
+    let targetFrameIndex = initialFrame;
+
+    const onScroll = () => {
+      targetFrameIndex = getFrameFromScroll();
     };
 
     window.addEventListener("scroll", onScroll);

@@ -10,19 +10,7 @@ export default function ThreeDModeling() {
       title: "Fan",
       description: "For Room Project",
       modelUrl: "/models/fan2.glb",
-    },
-    {
-      id: 2,
-      title: "Fan",
-      description: "For Room Project",
-      modelUrl: "/models/fan2.glb",
-    },
-    {
-      id: 3,
-      title: "Fan",
-      description: "For Room Project",
-      modelUrl: "/models/fan2.glb",
-    },
+    }
   ];
 
   return (

@@ -77,7 +77,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default function Model3DViewer({ modelUrl, cameraPosition = [0, 0, 5] }) {
+export default function Model3DViewer({ modelUrl, cameraPosition = [0, 2, 2] }) {
   return (
     <div className="model-viewer">
       <ErrorBoundary>
@@ -98,7 +98,7 @@ export default function Model3DViewer({ modelUrl, cameraPosition = [0, 0, 5] }) 
           {/* Controls for rotation */}
           <OrbitControls
             enableZoom={true}
-            enablePan={false}
+            enablePan={true}
             minDistance={2}
             maxDistance={10}
             autoRotate={false}

@@ -715,4 +715,71 @@ Loading screen state flow:
 
 ---
 
-*Last Updated: January 29, 2026*
+## Session Date: June 30, 2026
+
+### Phase 5: Claude Design Import — full reskin
+
+Imported the "Personal portfolio site design" from Claude Design and translated it
+faithfully into React, replacing the entire pixel-art aesthetic.
+
+#### New design system
+- Dark `#0B0A0D` background, `Archivo` + `JetBrains Mono` fonts, teal→blue accent
+  gradient (`#86F2E4 → #57BEF2 → #9DB2F5`).
+- Shared "atmosphere": fixed SVG film grain + viewfinder frame on every page.
+- Animated thermal gradients on hero / category headers / contact reel.
+- Tokens live as CSS vars in `src/index.css`; all component styles + responsive
+  breakpoints in `src/App.css`.
+
+#### Removed
+- ScrollyVideo pixel-art hero, Three.js `Model3DViewer` + `fan.glb`, `OrbitGame`
+  page, legacy `src/Hero.jsx` / `src/ProjectCard.jsx` / `Footer.jsx`.
+- Dependencies `three`, `@react-three/fiber`, `@react-three/drei`, `scrolly-video`.
+
+#### New shared components (`src/components/`)
+`Atmosphere`, `Navigation` (with hamburger), `Reveal` (IntersectionObserver
+fade-up), `PlaceholderMedia` (image-slot stand-in), `BipedScroller`, `ContactReel`,
+`DisciplinePlaceholder`, `ScrollToTop`.
+
+#### Pages & routes
+`/` Home · `/software` · `/games` · `/videography` · `/graphics` · `/animation` ·
+`/3d-modeling` · `/hypoxia` (full case study) · `/beatbop`. The five discipline
+pages + BeatBop are thin wrappers around `DisciplinePlaceholder`.
+
+#### The three explicit requirements
+1. **Responsive** — breakpoints at 820 / 760 / 480px collapse the grids, scale the
+   hero image, and tighten padding; headings already fluid via `clamp()`.
+2. **Hamburger menu** — `Navigation` shows a burger under 820px that toggles a
+   full-screen overlay; closes on link click / route change; locks body scroll.
+3. **Résumé** — all résumé links use `target="_blank"` with **no `download`** attr
+   so the PDF opens in a new tab (drops the design's `download` attribute).
+
+#### Biped — reverted to static (performance)
+Originally the R10T card scroll-scrubbed the biped video (`BipedScroller`). A heap
+snapshot showed JS memory was fine (~13MB, no leak); the lag was rendering: per-scroll
+video seeking + the full-screen `feTurbulence` grain with `mix-blend-mode: soft-light`
+(recomposites every scroll frame) + three continuously-animating thermal gradients.
+Performance pass:
+- Removed `BipedScroller`; R10T card now shows a static poster
+  (`public/biped-poster.jpg`, extracted from `biped.mp4` via ffmpeg).
+- Grain: dropped `soft-light` blend, desaturated (`feColorMatrix`), lowered opacity.
+- Thermal gradients: kept the look, removed the continuous `thermalDrift` animation.
+- `Atmosphere` rendered once at the app root (`App.jsx`) instead of per page, so the
+  grain filter isn't re-rasterized on every navigation (snappier route changes).
+
+#### Assets the user must add to `public/`
+- `felipe-hero.png` (home hero image — code points at `/felipe-hero.png`). IMPORTANT:
+  must be a PNG with a **transparent background** (subject cut out). The scene
+  integration (duotone tint into the gradient) is done natively in CSS via two stacked
+  `<img>` layers, one with `mix-blend-mode: luminosity` — no image post-processing
+  needed — but an opaque rectangular photo will read as a pasted rectangle.
+- `resume.pdf` (résumé button target — `/resume.pdf`)
+All other imagery renders as styled `PlaceholderMedia` boxes until real images are
+dropped in (swap to a real `<img src>` via the `src` prop).
+
+#### Notes
+- `npm run lint` fails with "couldn't find a configuration file" — pre-existing
+  (no ESLint config in repo), unrelated to this work. `npm run build` passes.
+
+---
+
+*Last Updated: June 30, 2026*

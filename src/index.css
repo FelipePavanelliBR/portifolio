@@ -1,12 +1,25 @@
 :root {
-  font-family: "Pixelify Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #25253eff;
+  /* Design tokens */
+  --bg: #0B0A0D;
+  --panel: #131116;
+  --panel-2: #121015;
+  --ink: #F2EEE7;
+  --ink-bright: #FBF7F0;
+  --ink-60: rgba(242, 238, 231, 0.6);
+  --ink-50: rgba(242, 238, 231, 0.5);
+  --ink-45: rgba(242, 238, 231, 0.45);
+  --line: rgba(255, 255, 255, 0.06);
+  --line-strong: rgba(255, 255, 255, 0.12);
+  --blue: #7CC4EC;
+  --teal: #86F2E4;
+  --accent-grad: linear-gradient(105deg, #86F2E4, #57BEF2 50%, #9DB2F5);
+  --on-accent: #06121a;
 
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'Archivo', system-ui, -apple-system, sans-serif;
+
+  color-scheme: dark;
+  font-family: var(--sans);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,42 +27,40 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+::selection {
+  background: #57BEF2;
+  color: #06121a;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2730;
+  border-radius: 8px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }

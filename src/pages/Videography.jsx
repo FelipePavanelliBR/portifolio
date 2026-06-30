@@ -1,19 +1,11 @@
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import DisciplinePlaceholder from "../components/DisciplinePlaceholder";
 
 export default function Videography() {
   return (
-    <div className="category-page">
-      <Navigation />
-
-      <main className="category-content">
-        <h1>Videography</h1>
-        <p className="category-description">
-          Videography projects coming soon...
-        </p>
-      </main>
-
-      <Footer />
-    </div>
+    <DisciplinePlaceholder
+      number="(06)"
+      title="Videography"
+      intro="Shooting, editing and interviewing — video journalism for Dartmouth's Office of Communications, expanded into more technical and creative work."
+    />
   );
 }

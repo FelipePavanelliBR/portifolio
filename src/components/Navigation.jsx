@@ -1,60 +1,96 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+
+const LINKS = [
+  { to: "/software", label: "software" },
+  { to: "/games", label: "games" },
+  { to: "/videography", label: "videography" },
+  { to: "/graphics", label: "graphics" },
+  { to: "/animation", label: "animation" },
+  { to: "/3d-modeling", label: "3D" },
+];
 
 export default function Navigation() {
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
 
-  const closeDropdown = () => {
-    setActiveDropdown(null);
-  };
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while the overlay menu is open.
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const isActive = (to) => pathname === to;
 
   return (
-    <nav className="main-nav">
-      <div className="nav-container">
-        <Link to="/" className="nav-logo" onClick={closeDropdown}>
-          Felipe Pavanelli
+    <>
+      <nav className="nav">
+        <Link to="/" className="nav-logo" aria-label="Felipe Pavanelli — home">
+          <span className="nav-badge">FP</span>
+          <span className="nav-name">Felipe Pavanelli</span>
         </Link>
 
-        <div className="nav-menu">
-          {/* GAMES Dropdown */}
-          <div
-            className="nav-item dropdown"
-            onMouseEnter={() => setActiveDropdown("games")}
-            onMouseLeave={closeDropdown}
-          >
-            <Link to="/games" className="nav-button">GAMES</Link>
-            {activeDropdown === "games" && (
-              <div className="dropdown-menu">
-                <Link to="/hypoxia" className="dropdown-item" onClick={closeDropdown}>
-                  Hypoxia
-                </Link>
-                <Link to="/beatbop" className="dropdown-item" onClick={closeDropdown}>
-                  BeatBop
-                </Link>
-                <Link to="/orbit" className="dropdown-item" onClick={closeDropdown}>
-                  Orbital Drift
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* 3D MODELING Link */}
-          <Link to="/3d-modeling" className="nav-button">3D MODELING</Link>
-
-          {/* VIDEOGRAPHY Link */}
-          <Link to="/videography" className="nav-button">VIDEOGRAPHY</Link>
-
-          {/* RESUME Button */}
+        <div className="nav-links">
+          {LINKS.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className={isActive(to) ? "navlink active" : "navlink"}
+            >
+              {label}
+            </Link>
+          ))}
           <a
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="nav-button resume-button"
+            className="nav-resume"
           >
-            RESUME
+            résumé ↗
           </a>
         </div>
+
+        <button
+          type="button"
+          className={open ? "nav-burger open" : "nav-burger"}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </nav>
+
+      <div className={open ? "nav-mobile open" : "nav-mobile"}>
+        {LINKS.map(({ to, label }) => (
+          <Link
+            key={to}
+            to={to}
+            className={isActive(to) ? "nav-mobile-link active" : "nav-mobile-link"}
+            onClick={() => setOpen(false)}
+          >
+            {label}
+          </Link>
+        ))}
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="nav-resume"
+          onClick={() => setOpen(false)}
+        >
+          résumé ↗
+        </a>
       </div>
-    </nav>
+    </>
   );
 }

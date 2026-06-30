@@ -11,13 +11,9 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
-    "@react-three/drei": "^9.78.0",
-    "@react-three/fiber": "^8.13.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.13.0",
-    "scrolly-video": "^0.0.24",
-    "three": "^0.152.2"
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.32.2",
